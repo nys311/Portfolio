@@ -86,7 +86,37 @@ function renderHome(d) {
         <div class="orbit-system__ring orbit-system__ring--dashed" style="--inset:5%;--dur:26s"><i style="--c:var(--pink)"></i><i class="sm" style="--c:var(--amber)"></i></div>
         <div class="orbit-system__ring" style="--inset:10%;--dur:18s"><i class="sm" style="--c:var(--violet)"></i></div>
         <div class="avatar" data-fallback>${imgTag(p.avatar, p.name)}</div>
-        <span class="planet"></span>
+        <svg class="planet" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <radialGradient id="plBody" cx="36%" cy="30%" r="75%">
+              <stop offset="0" stop-color="#fff3b0"/><stop offset=".22" stop-color="#ffd600"/>
+              <stop offset=".55" stop-color="#ff2bd6"/><stop offset=".85" stop-color="#7a1fff"/><stop offset="1" stop-color="#1a0638"/>
+            </radialGradient>
+            <linearGradient id="plRing" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset=".5" stop-color="#ff2bd6"/><stop offset="1" stop-color="#00f0ff"/></linearGradient>
+            <clipPath id="plClip"><circle cx="100" cy="100" r="46"/></clipPath>
+            <!-- synthwave sun cut-outs: bands widen toward the bottom -->
+            <mask id="plBands"><rect width="200" height="200" fill="#fff"/>
+              <g fill="#000"><rect y="106" width="200" height="1.5"/><rect y="114" width="200" height="2.5"/><rect y="123" width="200" height="3.2"/><rect y="132.5" width="200" height="4"/></g>
+            </mask>
+          </defs>
+          <g transform="rotate(-20 100 100)">
+            <path class="planet__ring planet__ring--back" d="M14,100 A86,20 0 0,1 186,100"/>
+            <path class="planet__ring2" d="M2,100 A98,25 0 0,1 198,100"/>
+          </g>
+          <g mask="url(#plBands)">
+            <circle cx="100" cy="100" r="46" fill="url(#plBody)"/>
+            <g clip-path="url(#plClip)" class="planet__grid">
+              <ellipse cx="100" cy="100" rx="16" ry="46"/><ellipse cx="100" cy="100" rx="32" ry="46"/><ellipse cx="100" cy="100" rx="44" ry="46"/>
+              <line x1="54" y1="100" x2="146" y2="100"/><path d="M58,80 Q100,86 142,80"/><path d="M64,64 Q100,69 136,64"/>
+            </g>
+            <circle cx="100" cy="100" r="46" class="planet__rim"/>
+          </g>
+          <g transform="rotate(-20 100 100)">
+            <path class="planet__ring" d="M14,100 A86,20 0 0,0 186,100"/>
+            <path class="planet__ring2" d="M2,100 A98,25 0 0,0 198,100"/>
+            <circle class="planet__moon" cx="186" cy="100" r="3.2"/>
+          </g>
+        </svg>
       </div>
     </div>
   </div>

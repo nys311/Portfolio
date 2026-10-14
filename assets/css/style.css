@@ -294,14 +294,16 @@ html.is-scrolling .card, html.is-scrolling .btn, html.is-scrolling .social, html
 .avatar::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.25), transparent 40%); pointer-events: none; }
 @keyframes float { 50% { transform: translateY(-12px); } }
 
-/* Mini planet with ring decorative */
-.planet {
-  position: absolute; width: 22%; aspect-ratio: 1; right: -2%; bottom: 6%; border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fde68a, #f472b6 45%, #4c1d95 85%);
-  box-shadow: inset -12px -10px 24px rgba(0, 0, 0, 0.5), 0 0 40px rgba(244, 114, 182, 0.4);
-  animation: float 8s ease-in-out infinite reverse;
-}
-.planet::after { content: ""; position: absolute; left: -35%; right: -35%; top: 42%; height: 16%; border-radius: 50%; border: 2px solid rgba(253, 230, 138, 0.55); transform: rotate(-20deg); }
+/* Mini planet: warm synthwave sphere + neon wireframe + neon rings (static glow, only the float moves) */
+.planet { position: absolute; width: 44%; left: 60%; top: 57%; overflow: visible; pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(255, 43, 214, 0.55)) drop-shadow(0 0 22px rgba(0, 240, 255, 0.25));
+  animation: float 8s ease-in-out infinite reverse; will-change: transform; }
+.planet__grid { fill: none; stroke: rgba(0, 240, 255, 0.55); stroke-width: 0.8; }
+.planet__rim { fill: none; stroke: rgba(255, 255, 255, 0.35); stroke-width: 1; }
+.planet__ring { fill: none; stroke: url(#plRing); stroke-width: 3; stroke-linecap: round; }
+.planet__ring--back { opacity: 0.45; }
+.planet__ring2 { fill: none; stroke: rgba(0, 240, 255, 0.6); stroke-width: 1; stroke-dasharray: 2 5; }
+.planet__moon { fill: #00f0ff; }
 
 /* Focus quick-grid on home */
 .quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
