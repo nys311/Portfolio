@@ -3,6 +3,7 @@
 // - "lat"/"lon": toạ độ thành phố · "photo": ảnh trong assets/img/travel/ (chép đè ảnh demo, giữ nguyên tên)
 // - "year", "title" (câu ngắn), "note" (vài dòng kỷ niệm), "tags": để trống thì tự ẩn. Chỉ ghi năm, không ghi ngày cụ thể.
 // - "photoFit": "contain" → hiện trọn ảnh (ảnh dọc/ảnh ghép), mặc định cắt cho đầy khung vuông.
+// - "video": clip ngắn (mp4, nên < 10MB) trong assets/video/travel/ — tự phát không tiếng khi mở trang đó; "photo" làm ảnh bìa.
 // - "visits": số lần đã đến một nước (hiện trên trang sách + thống kê).
 // - Thứ tự trong "trips" = thứ tự trang trong sách. Các thành phố gần nhau được gộp 1 điểm trên bản đồ.
 window.SITE_DATA = window.SITE_DATA || {};
@@ -70,11 +71,16 @@ SITE_DATA.travel = {
       "country": "Japan",
       "lat": 35.68,
       "lon": 139.69,
-      "year": null,
-      "title": "",
-      "note": "",
+      "year": 2026,
+      "title": "Fireworks over Skytree",
+      "note": "A summer night in Tokyo — fireworks bursting all around the glowing Tokyo Skytree.",
       "photo": "assets/img/travel/tokyo.jpg",
-      "tags": []
+      "tags": [
+        "Fireworks",
+        "Summer",
+        "Skytree"
+      ],
+      "video": "assets/video/travel/tokyo-fireworks-2026.mp4"
     },
     {
       "place": "Kyoto",

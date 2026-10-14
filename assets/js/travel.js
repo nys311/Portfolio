@@ -254,12 +254,19 @@
       </div>`;
     const stamp = (tr) => `
       <div class="stamp mono" aria-hidden="true"><span>ENTRY</span><b>${esc(code(tr.country))}</b><span>APPROVED</span></div>`;
+    // A trip can carry a short "video" (muted loop, played only while its page is open); "photo" is its poster.
+    const media = (tr, cls = '') => tr.video ? `
+      <span class="vid ${cls}" data-trip="${t.trips.indexOf(tr)}">
+        <video src="${asset(tr.video)}" poster="${asset(tr.photo)}" muted loop playsinline preload="none" aria-label="${esc(tr.place)} video"></video>
+        <button class="vid__sound mono" type="button" aria-label="Toggle sound">🔇 SOUND</button>
+        <span class="vid__rec mono">● REC</span>
+      </span>` : `<img class="${cls}" src="${asset(tr.photo)}" alt="${esc(tr.place)}" loading="lazy" onerror="this.style.visibility='hidden'">`;
     const photo = (tr, i) => `
       <div class="pg pg--photo">
         ${corners}
-        <div class="pg__bar mono"><span>IMG_${pad(i + 1)}</span><span>${esc(tr.photo.split('/').pop())}</span></div>
+        <div class="pg__bar mono"><span>${tr.video ? 'VID' : 'IMG'}_${pad(i + 1)}</span><span>${esc((tr.video || tr.photo).split('/').pop())}</span></div>
         <figure class="holo${tr.photoFit === 'contain' ? ' holo--contain' : ''}">
-          <img src="${asset(tr.photo)}" alt="${esc(tr.place)}" loading="lazy" onerror="this.style.visibility='hidden'">
+          ${media(tr)}
           <figcaption class="mono">${esc(tr.place)}${yr(tr)}</figcaption>
         </figure>
         ${stamp(tr)}
@@ -279,7 +286,7 @@
     const text = (tr, i, withPhoto) => `
       <div class="pg pg--text ${withPhoto ? 'pg--combo' : ''}">
         ${corners}
-        ${withPhoto ? `<img class="pg__photo${tr.photoFit === 'contain' ? ' pg__photo--contain' : ''}" src="${asset(tr.photo)}" alt="${esc(tr.place)}" loading="lazy" onerror="this.style.visibility='hidden'">` : ''}
+        ${withPhoto ? media(tr, `pg__photo${tr.photoFit === 'contain' ? ' pg__photo--contain' : ''}`) : ''}
         <div class="pg__bar mono"><span>ENTRY ${pad(i + 1)}/${pad(n)}</span><span class="pg__tag">${esc(code(tr.country))}</span></div>
         <h3 class="pg__place glitch-text" data-text="${esc(tr.place)}">${esc(tr.place)}</h3>
         <div class="pg__country mono">&gt; ${esc(tr.country)}${yr(tr)}</div>
@@ -398,8 +405,24 @@
       if (stage.getBoundingClientRect().top > innerHeight * 0.6) stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
+    const syncVideos = (i) => panel.querySelectorAll('.vid').forEach((v) => {
+      const vid = v.querySelector('video');
+      if (+v.dataset.trip === i) { vid.preload = 'auto'; vid.play().catch(() => {}); } else vid.pause();
+    });
+    // Sound toggle (stopPropagation so it doesn't flip the page).
+    panel.addEventListener('click', (e) => {
+      const btn = e.target.closest('.vid__sound');
+      if (!btn) return;
+      e.stopPropagation();
+      const vid = btn.parentElement.querySelector('video');
+      vid.muted = !vid.muted;
+      btn.textContent = vid.muted ? '🔇 SOUND' : '🔊 SOUND';
+      if (!vid.muted) vid.play().catch(() => {});
+    }, true);
+
     const book = createBook(panel.querySelector('.book-stage'), t, (f) => {
       const i = f >= 1 && f <= t.trips.length ? f - 1 : -1;
+      syncVideos(i);
       map.setActive(i);
       chips.forEach((c) => c.classList.toggle('is-active', +c.dataset.go === f));
       pager.textContent = f === 0 ? 'COVER' : i >= 0 ? `${pad(f)}/${pad(t.trips.length)} · ${t.trips[i].place.toUpperCase()}` : 'END';

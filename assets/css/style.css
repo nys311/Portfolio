@@ -925,3 +925,14 @@ body { font-size: 17px; }
   .research-row p, .feature__body p, .pub p, .talk p, .project__body p, .award p { font-size: 15.5px; }
   .tab { font-size: 12.5px; padding: 8px 13px; }
 }
+
+/* travel video (fills the same box as a photo) */
+.vid { position: relative; display: block; }
+.holo .vid { aspect-ratio: 1; }
+.vid video { display: block; width: 100%; height: 100%; object-fit: cover; background: #05040f; }
+.holo .vid video { aspect-ratio: 1; }
+.pg__photo.vid video { aspect-ratio: 16 / 9; }
+.vid__sound { position: absolute; right: 8px; top: 8px; z-index: 2; padding: 4px 8px; font-size: 11px; letter-spacing: 0.1em; color: var(--cyan);
+  background: rgba(5, 6, 15, 0.8); border: 1px solid rgba(0, 240, 255, 0.5); }
+.vid__sound:hover { background: rgba(0, 240, 255, 0.15); }
+.vid__rec { position: absolute; left: 8px; top: 8px; z-index: 2; font-size: 11px; letter-spacing: 0.1em; color: #ff3b5c; text-shadow: 0 0 6px #ff3b5c; animation: blink 1.2s steps(1) infinite; }
